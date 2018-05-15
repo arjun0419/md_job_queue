@@ -1,0 +1,39 @@
+{
+  "name": "didactic-telegram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -d -w",
+    "start": "nodemon server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arjun0419/didactic-telegram.git"
+  },
+  "author": "arjun0419",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arjun0419/didactic-telegram/issues"
+  },
+  "homepage": "https://github.com/arjun0419/didactic-telegram#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "nodemon": "^1.17.1",
+    "webpack": "^3.11.0"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}
