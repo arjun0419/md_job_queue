@@ -11,7 +11,8 @@
 const mongoose = require('mongoose');
 
 //  Set up default mongoose connection
-const mongoDB = `mongodb://${process.env.MLABUSER}:${process.env.MLABPW}@ds225010.mlab.com:25010/${process.env.DB}`;
+const mongoDB = process.env.DB_URI;
+
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;

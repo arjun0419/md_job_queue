@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import getJobStatus from '../helpers';
+import { getJobStatus } from '../helpers';
 import CheckStatusInput from './CheckStatusInput';
 import DisplayStatus from './DisplayStatus';
 
