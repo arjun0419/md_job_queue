@@ -19,9 +19,8 @@ class CacheURL extends React.Component {
 
   handleSubmit() {
     const { url } = this.state;
-    console.log("postURLtoDB: ", postURLtoDB);
     postURLtoDB(url, (response) => {
-      this.setState({ url: response.data });
+      this.setState({ jobID: response.data });
     });
   }
 

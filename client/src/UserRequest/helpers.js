@@ -16,4 +16,4 @@ const postURLtoDB = (url, callback) => {
     });
 };
 
-export default { getJobStatus, postURLtoDB };
+export { postURLtoDB, getJobStatus };
