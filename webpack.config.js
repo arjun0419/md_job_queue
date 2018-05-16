@@ -8,10 +8,17 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader" }
+      { test: /\.jsx?$/, 
+        exclude: /node_modules/,
+        loader: "babel-loader" 
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader','css-loader' ]
+      }
     ]
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx',],
   },
 };
