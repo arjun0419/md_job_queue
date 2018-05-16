@@ -12,5 +12,3 @@ const Welcome = ({ handleClick }) => (
 );
 
 export default Welcome;
-
-

@@ -9,7 +9,6 @@
   display: inline-block;
   font-size: 16px;
   margin: 20px;
-
 }
 
 .welcome{
@@ -17,10 +16,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
-
-button{
-
 }
 
 .buttons{
