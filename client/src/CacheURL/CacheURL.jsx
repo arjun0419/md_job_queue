@@ -20,6 +20,7 @@ class CacheURL extends React.Component {
   handleSubmit() {
     const { url } = this.state;
     postURLtoDB(url, (response) => {
+      console.log(response.data);
       this.setState({ jobID: response.data });
     });
   }
@@ -36,6 +37,7 @@ class CacheURL extends React.Component {
       />) : (
         <DisplayJobID
           jobID={this.state.jobID}
+          url={this.state.url}
         />
     );
 

@@ -2,6 +2,7 @@ require('./dbConnection');
 
 const URLcache = require('./models/urlCache');
 const JobList = require('./models/jobList');
+const fs = require('fs');
 
 const addToJobList = (jobID, jobURL, res) => {
   const jobList = new JobList({
@@ -13,8 +14,7 @@ const addToJobList = (jobID, jobURL, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.send(`Awesome! We will add ${job.url} to our database. Please come back and check the status for ${job.jobId} in 10 mins or so.`);
-      // console.log(`Added ${job.jobId} for ${job.url} to database.`);
+      res.send(job.jobId);
     }
   });
 };
@@ -37,9 +37,16 @@ module.exports.fetchJobIDfromDB = (jobID, res) => {
     if (err) {
       throw err;
     } else if (cache.length > 0) {
-      result = cache;
+      const { html } = cache[0];
+      fs.writeFile('./client/cache.html', html, (err) => {
+        if (err) {
+          return console.log(err);
+        }
+        result = cache;
+        console.log('The file was saved!');
+        res.send(result);
+      });
     }
-    res.send(result);
   });
 };
 
@@ -50,8 +57,7 @@ module.exports.saveUrlToDB = (urlObj, res) => {
   checkIfURLexistsInDB(urlObj.url)
     .then((response) => {
       if (response[0] && response[0].id) {
-        // res.send(response);
-        res.send(`Looks like we have already cached url ${urlObj.url}. Please check status of JOB ID: ${response[0].id}`);
+        res.send(response[0].id);
       } else {
         url.save((err, urlSaved) => {
           if (err) {

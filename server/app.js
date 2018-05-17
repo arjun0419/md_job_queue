@@ -1,16 +1,18 @@
 const express = require('express');
 const path = require('path');
-// const bodyParser = require('body-parser');
 
 const app = express();
 const statFilesPath = path.resolve(__dirname, '../client/dist');
 const { saveUrlToDB, fetchJobIDfromDB } = require('../db/dbHelpers');
 
 app.use(express.static(statFilesPath));
-// app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.send();
+});
+
+app.get('/cache', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/cache.html'));
 });
 
 app.get('/api/:jobID/status', (req, res) => {
@@ -19,7 +21,6 @@ app.get('/api/:jobID/status', (req, res) => {
 });
 
 app.post('/api/:urlToSave/post', (req, res) => {
-  console.log('got request to save', req.params);
   const { urlToSave } = req.params;
 
   const url = {

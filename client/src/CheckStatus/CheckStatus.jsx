@@ -24,7 +24,7 @@ class CheckStatus extends React.Component {
     getJobStatus(jobID, (response) => {
       console.log(response.data);
       this.setState({ url: response.data[0].url });
-      if (response.data.status === 'pending') {
+      if (response.data[0].status === 'pending') {
         this.setState({ jobStatus: response.data[0].status });
       } else if (response.data[0].status === 'complete') {
         this.setState({ jobStatus: response.data[0].status });
@@ -45,7 +45,6 @@ class CheckStatus extends React.Component {
       />) : (
         <DisplayStatus
           jobStatus={this.state.jobStatus}
-          html={this.state.html}
           url={this.state.url}
         />
     );
