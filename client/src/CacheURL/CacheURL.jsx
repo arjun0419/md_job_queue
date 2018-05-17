@@ -12,6 +12,7 @@ class CacheURL extends React.Component {
       url: '',
       jobID: null,
       status: null,
+      log: null,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -21,7 +22,6 @@ class CacheURL extends React.Component {
   handleSubmit() {
     const { url } = this.state;
     postURLtoDB(url, (response) => {
-      console.log(response.data);
       this.setState({
         jobID: response.data.id,
         status: response.data.status,

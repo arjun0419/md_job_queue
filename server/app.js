@@ -14,7 +14,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/cache', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/cache.txt'));
 });
 
 app.get('/api/:jobID/status', (req, res) => {

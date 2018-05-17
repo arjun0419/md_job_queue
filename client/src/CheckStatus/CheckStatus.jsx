@@ -10,24 +10,33 @@ class CheckStatus extends React.Component {
 
     this.state = {
       jobID: '',
-      jobStatus: null,
-      url: null,
+      jobStatus: '',
+      url: '',
+      html: '',
+      showCache: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCacheClick = this.handleCacheClick.bind(this);
   }
 
   handleSubmit() {
-    const { jobID } = this.state;
-    getJobStatus(jobID, (response) => {
-      console.log(response);
-      this.setState({
-        jobID: response.data.jobId,
-        url: response.data.url,
-        jobStatus: response.data.status,
+    if (this.state.jobID !== '') {
+      const { jobID } = this.state;
+      getJobStatus(jobID, (response) => {
+        this.setState({
+          jobID: response.data.jobId,
+          url: response.data.url,
+          jobStatus: response.data.status,
+          html: response.data.html,
+        });
       });
-    });
+    }
+  }
+
+  handleCacheClick() {
+    this.setState({ showCache: true });
   }
 
   handleInputChange(e) {
@@ -35,7 +44,7 @@ class CheckStatus extends React.Component {
   }
 
   render() {
-    const view = (this.state.jobStatus === null) ? (
+    const view = (this.state.jobStatus === '') ? (
       <CheckStatusInput
         handleInputChange={this.handleInputChange}
         handleSubmit={this.handleSubmit}
@@ -43,6 +52,9 @@ class CheckStatus extends React.Component {
         <DisplayStatus
           jobStatus={this.state.jobStatus}
           url={this.state.url}
+          html={this.state.html}
+          showCache={this.state.showCache}
+          handleCacheClick={this.handleCacheClick}
         />
     );
 

@@ -2,7 +2,6 @@ require('./dbConnection');
 
 const URLcache = require('./models/urlCache');
 const JobList = require('./models/jobList');
-const fs = require('fs');
 
 const addToJobList = (jobID, jobURL, res) => {
   const jobList = new JobList({
@@ -45,12 +44,9 @@ module.exports.fetchJobIDfromDB = (jobID, res) => {
         result = {
           url: cache.url,
           status: cache.status,
+          html: cache.html,
         };
         res.send(result);
-        const { html } = cache;
-        fs.writeFile('./client/cache.txt', html, (err) => {
-          if (err) console.error(err);
-        });
       }
     })
     .catch(() => {
