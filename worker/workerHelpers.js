@@ -15,22 +15,8 @@ const updateURLCache = (jobID, html) => {
     fields: 'id status url',
   };
 
-  // return URLcache.findOneAndUpdate(query, update, options, (err) => {
-  //   if (err) {
-  //     console.error(err);
-  //   } else {
-  //     JobList.findOneAndRemove({ jobId: jobID }, (err2, job) => {
-  //       if (err2) {
-  //         console.error(err2);
-  //       } else if (job) {
-  //         console.log('job found and removed');
-  //       }
-  //     });
-  //   }
-  // });
   return URLcache.findOneAndUpdate(query, update, options)
     .then(() => {
-      console.log("got here after updating html")
       JobList.findOneAndRemove({ jobId: jobID })
         .then(() => {
           console.log('job found and removed');
@@ -44,15 +30,15 @@ const updateURLCache = (jobID, html) => {
     });
 };
 
-const fetchHTML = (url) => {
-  return axios.get(`http://www.${url}`)
+const fetchHTML = url => (
+  axios.get(`http://www.${url}`)
     .then(response => (
       (response.data)
     ))
     .catch(error => (
       (null)
-    ));
-};
+    ))
+);
 
 const sendHTML = (jobURL, jobID) => {
   fetchHTML(jobURL)
@@ -66,18 +52,22 @@ const sendHTML = (jobURL, jobID) => {
 };
 
 module.exports.workerTasks = () => {
-  JobList.find({}, 'jobId url', (err, jobs) => {
-    if (err) return console.log(err);
-    if (jobs.length > 0) {
-      console.log(`worker has ${jobs.length} jobs to complete`);
-      jobs.forEach((job) => {
-        const jobURL = job.url;
-        const jobID = job.jobId;
-        console.log('From for each => jobURL :', jobURL, 'jobID: ', jobID);
-        sendHTML(jobURL, jobID);
-      });
-    } else {
-      console.log('No Jobs found for worker');
-    }
-  });
+  JobList.find({}, 'jobId url')
+    .then((jobs) => {
+      if (jobs.length > 0) {
+        console.log(`worker has ${jobs.length} jobs to complete`);
+        jobs.forEach((job) => {
+          const jobURL = job.url;
+          const jobID = job.jobId;
+          console.log('Worker is fetching jobURL :', jobURL, 'jobID: ', jobID);
+          sendHTML(jobURL, jobID);
+        });
+      } else {
+        console.log('No Jobs found for worker');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
+
