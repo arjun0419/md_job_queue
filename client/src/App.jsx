@@ -1,9 +1,7 @@
 import React, { Fragment } from 'react';
 
-// import Header from './Header';
-import Welcome from './welcome';
+import Welcome from './Welcome';
 import UserRequest from './UserRequest';
-// import Footer from './Footer';
 
 
 class App extends React.Component {
@@ -17,12 +15,14 @@ class App extends React.Component {
   }
 
   handleClick(type) {
-    console.log(type);
     this.setState({ clicked: type });
   }
 
   render() {
-    const view = this.state.clicked ? <UserRequest clicked={this.state.clicked}/> : <Welcome handleClick={this.handleClick} />;
+    const view = this.state.clicked ?
+      <UserRequest clicked={this.state.clicked} />
+      :
+      <Welcome handleClick={this.handleClick} />;
     return (
       <Fragment>
         {view}

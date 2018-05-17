@@ -10,66 +10,77 @@ const addToJobList = (jobID, jobURL, res) => {
     url: jobURL,
   });
 
-  jobList.save((err, job) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(job.jobId);
-    }
-  });
+  jobList.save()
+    .then(() => {
+      const response = {
+        id: jobID,
+        status: 'new',
+        log: 'success',
+      };
+      res.send(response);
+    })
+    .catch((err) => {
+      res.send({ id: null, status: 'error', log: err });
+    });
 };
 
-const checkIfURLexistsInDB = url => (
-  URLcache.find({ url: `${url}` }, 'id', (err, ID) => {
-    let result = null;
-    if (err) {
-      throw err;
-    } else if (ID.length > 0) {
-      result = ID;
-    }
-    return result;
-  })
-);
+const checkIfURLexistsInDB = (url) => {
+  let result = null;
+  return URLcache.findOne({ url: `${url}` }, 'id')
+    .then((cache) => {
+      result = cache;
+      return result;
+    })
+    .catch((err) => {
+      result = { id: null, status: 'error', log: err };
+      return result;
+    });
+};
 
 module.exports.fetchJobIDfromDB = (jobID, res) => {
-  URLcache.find({ _id: jobID }, (err, cache) => {
-    let result = null;
-    if (err) {
-      throw err;
-    } else if (cache.length > 0) {
-      const { html } = cache[0];
-      fs.writeFile('./client/cache.html', html, (err) => {
-        if (err) {
-          return console.log(err);
-        }
-        result = cache;
-        console.log('The file was saved!');
+  let result = null;
+  URLcache.findById(jobID)
+    .then((cache) => {
+      if (cache.id) {
+        result = {
+          url: cache.url,
+          status: cache.status,
+        };
         res.send(result);
-      });
-    }
-  });
+        const { html } = cache;
+        fs.writeFile('./client/cache.txt', html, (err) => {
+          if (err) console.error(err);
+        });
+      }
+    })
+    .catch(() => {
+      res.send({ id: null, status: 'Not Found' });
+    });
 };
 
 module.exports.saveUrlToDB = (urlObj, res) => {
   const url = new URLcache(urlObj);
-
-  // check to see if url is already in db, if so, retreive JobID
   checkIfURLexistsInDB(urlObj.url)
     .then((response) => {
-      if (response[0] && response[0].id) {
-        res.send(response[0].id);
+      if (response !== null) {
+        const result = {
+          status: 'old',
+          log: 'success',
+          id: response.id,
+        };
+        res.send(result);
       } else {
-        url.save((err, urlSaved) => {
-          if (err) {
-            throw err;
-          } else {
-            addToJobList(urlSaved.id, urlSaved.url, res);
-          }
-        });
+        url.save()
+          .then((cache) => {
+            addToJobList(cache.id, cache.url, res);
+          })
+          .catch((err) => {
+            res.send({ id: null, status: 'error', log: err });
+          });
       }
     })
     .catch((error) => {
-      throw error;
+      res.send({ id: null, status: 'error', log: error });
     });
 };
 

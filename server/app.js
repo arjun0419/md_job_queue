@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 
+const router = express.Router();
+
 const app = express();
 const statFilesPath = path.resolve(__dirname, '../client/dist');
 const { saveUrlToDB, fetchJobIDfromDB } = require('../db/dbHelpers');
@@ -12,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/cache', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/cache.html'));
+  res.sendFile(path.join(__dirname, '../client/cache.txt'));
 });
 
 app.get('/api/:jobID/status', (req, res) => {

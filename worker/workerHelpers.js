@@ -15,23 +15,37 @@ const updateURLCache = (jobID, html) => {
     fields: 'id status url',
   };
 
-  URLcache.findOneAndUpdate(query, update, options, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      JobList.findOneAndRemove({ jobId: jobID }, (err2, job) => {
-        if (err2) {
-          console.log(err2);
-        } else if (job) {
+  // return URLcache.findOneAndUpdate(query, update, options, (err) => {
+  //   if (err) {
+  //     console.error(err);
+  //   } else {
+  //     JobList.findOneAndRemove({ jobId: jobID }, (err2, job) => {
+  //       if (err2) {
+  //         console.error(err2);
+  //       } else if (job) {
+  //         console.log('job found and removed');
+  //       }
+  //     });
+  //   }
+  // });
+  return URLcache.findOneAndUpdate(query, update, options)
+    .then(() => {
+      console.log("got here after updating html")
+      JobList.findOneAndRemove({ jobId: jobID })
+        .then(() => {
           console.log('job found and removed');
-        }
-      });
-    }
-  });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 const fetchHTML = (url) => {
-  return axios.get(`http://${url}`)
+  return axios.get(`http://www.${url}`)
     .then(response => (
       (response.data)
     ))
@@ -52,7 +66,6 @@ const sendHTML = (jobURL, jobID) => {
 };
 
 module.exports.workerTasks = () => {
-  console.log('Worker is running now (runs every 1 minute)!', new Date());
   JobList.find({}, 'jobId url', (err, jobs) => {
     if (err) return console.log(err);
     if (jobs.length > 0) {

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import CacheURL from './CacheURL/CacheURL';
 import CheckStatus from './CheckStatus/CheckStatus';
@@ -9,10 +10,7 @@ class UserRequest extends React.Component {
     this.state = {
       requestType: props.clicked,
     };
-    this.handleClick = this.handleClick.bind(this);
   }
-
-  handleClick(type) {}
 
   render() {
     let view = '';
@@ -31,3 +29,7 @@ class UserRequest extends React.Component {
 }
 
 export default UserRequest;
+
+UserRequest.propTypes = {
+  clicked: PropTypes.string.isRequired,
+};

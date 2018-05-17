@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const DisplayStatus = ({ jobStatus, url }) => {
   let view = (
     <div className="flex-centered-column">
-      <h1>Satus for {url}: { jobStatus } </h1>
+      <h1>Satus: { jobStatus } </h1>
       <h3>Please come back in a few mins.</h3>
     </div>
   );
@@ -18,9 +19,21 @@ const DisplayStatus = ({ jobStatus, url }) => {
         </div>
       </div>
     );
+  } else if (jobStatus === 'Not Found') {
+    view = (
+      <div className="flex-centered-column">
+        <h1>Satus: { jobStatus } </h1>
+        <h3>Please verify this Job ID. This appears to be incorrect.</h3>
+      </div>
+    );
   }
 
   return view;
 };
 
 export default DisplayStatus;
+
+DisplayStatus.propTypes = {
+  jobStatus: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+};

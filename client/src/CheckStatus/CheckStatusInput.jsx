@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const CheckStatusInput = ({ handleInputChange, handleSubmit }) => (
   <div className="flex-centered-column">
@@ -9,3 +10,8 @@ const CheckStatusInput = ({ handleInputChange, handleSubmit }) => (
 );
 
 export default CheckStatusInput;
+
+CheckStatusInput.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+};
