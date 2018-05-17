@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('../worker/worker');
 
 const app = require('./app');
 
