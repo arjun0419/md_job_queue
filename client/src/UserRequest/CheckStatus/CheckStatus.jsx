@@ -11,6 +11,8 @@ class CheckStatus extends React.Component {
     this.state = {
       jobID: '',
       jobStatus: null,
+      html: null,
+      url: null,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -20,7 +22,14 @@ class CheckStatus extends React.Component {
   handleSubmit() {
     const { jobID } = this.state;
     getJobStatus(jobID, (response) => {
-      this.setState({ jobStatus: response.data });
+      console.log(response.data);
+      this.setState({ url: response.data[0].url });
+      if (response.data.status === 'pending') {
+        this.setState({ jobStatus: response.data[0].status });
+      } else if (response.data[0].status === 'complete') {
+        this.setState({ jobStatus: response.data[0].status });
+        this.setState({ html: response.data[0].html });
+      }
     });
   }
 
@@ -36,6 +45,8 @@ class CheckStatus extends React.Component {
       />) : (
         <DisplayStatus
           jobStatus={this.state.jobStatus}
+          html={this.state.html}
+          url={this.state.url}
         />
     );
 

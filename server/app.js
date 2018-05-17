@@ -4,7 +4,7 @@ const path = require('path');
 
 const app = express();
 const statFilesPath = path.resolve(__dirname, '../client/dist');
-const { saveUrlToDB } = require('../db/dbHelpers');
+const { saveUrlToDB, fetchJobIDfromDB } = require('../db/dbHelpers');
 
 app.use(express.static(statFilesPath));
 // app.use(bodyParser.json());
@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/:jobID/status', (req, res) => {
   const { jobID } = req.params;
-  res.send(`hello from server, we got your request for job ID ${jobID}`);
+  fetchJobIDfromDB(jobID, res);
 });
 
 app.post('/api/:urlToSave/post', (req, res) => {
